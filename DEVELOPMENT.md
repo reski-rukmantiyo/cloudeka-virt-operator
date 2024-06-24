@@ -7,6 +7,25 @@
 - Helm
 - Kubectl
 
+## Preqrequisite
+
+### Create SSL Certificate (development only)
+
+```
+openssl genrsa -out tls.key 2048
+openssl req -new -key tls.key -out tls.csr -subj "/CN=my-webhook.local" -addext "subjectAltName = DNS:my-webhook.local,DNS:localhost"
+openssl x509 -req -in tls.csr -signkey tls.key -out tls.crt -days 365 -extfile <(printf "subjectAltName=DNS:my-webhook.local,DNS:localhost")
+cp tls.crt /tmp/k8s-webhook-server/serving-certs/tls.crt
+cp tls.key /tmp/k8s-webhook-server/serving-certs/tls.key
+cat /tmp/k8s-webhook-server/serving-certs/tls.crt|base64|tr -d '\n'
+```
+
+### Setup Webhook Server (development only)
+
+```
+10.0.2.2 my-webhook.local
+```
+
 ## Development Process
 
 ```
@@ -24,3 +43,4 @@ Visual Studio Code
 ```
 make generate manifests install
 ```
+
