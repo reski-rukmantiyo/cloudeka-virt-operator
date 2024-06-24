@@ -1,0 +1,12 @@
+apiVersion: cloudeka.ai.cloudeka.ai/v1alpha1
+kind: CloudekaMachine
+metadata:
+  labels:
+    app.kubernetes.io/name: cloudekamachine
+    app.kubernetes.io/instance: cloudekamachine-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: cloudekamachine-sample
+spec:
+  # TODO(user): Add fields here

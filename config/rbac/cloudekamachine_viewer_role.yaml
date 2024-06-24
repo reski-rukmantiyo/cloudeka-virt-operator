@@ -1,27 +1,27 @@
-# permissions for end users to view virtualmachines.
+# permissions for end users to view cloudekamachines.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: virtualmachine-viewer-role
+    app.kubernetes.io/instance: cloudekamachine-viewer-role
     app.kubernetes.io/component: rbac
     app.kubernetes.io/created-by: operator
     app.kubernetes.io/part-of: operator
     app.kubernetes.io/managed-by: kustomize
-  name: virtualmachine-viewer-role
+  name: cloudekamachine-viewer-role
 rules:
 - apiGroups:
-  - api.cloudeka.ai
+  - cloudeka.ai.cloudeka.ai
   resources:
-  - virtualmachines
+  - cloudekamachines
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - api.cloudeka.ai
+  - cloudeka.ai.cloudeka.ai
   resources:
-  - virtualmachines/status
+  - cloudekamachines/status
   verbs:
   - get

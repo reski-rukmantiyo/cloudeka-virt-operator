@@ -34,7 +34,7 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	apiv1beta1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1beta1"
+	cloudekaaiv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 	"github.com/reski-rukmantiyo/cloudeka-virt-operator/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
@@ -47,7 +47,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(apiv1beta1.AddToScheme(scheme))
+	utilruntime.Must(cloudekaaiv1alpha1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -122,11 +122,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controller.VirtualMachineReconciler{
+	if err = (&controller.CloudekaMachineReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "VirtualMachine")
+		setupLog.Error(err, "unable to create controller", "controller", "CloudekaMachine")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder
