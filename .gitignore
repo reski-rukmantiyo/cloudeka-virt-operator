@@ -26,8 +26,3 @@ go.work
 *.swp
 *.swo
 *~
-
-bin/
-vendor/
-cmd/__debug_bin760694527
-cmd/__debug_bin901394837

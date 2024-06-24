@@ -27,7 +27,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	cloudekaaiv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
+	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 )
 
 var _ = Describe("CloudekaMachine Controller", func() {
@@ -40,13 +40,13 @@ var _ = Describe("CloudekaMachine Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		cloudekamachine := &cloudekaaiv1alpha1.CloudekaMachine{}
+		cloudekamachine := &virtv1alpha1.CloudekaMachine{}
 
 		BeforeEach(func() {
 			By("creating the custom resource for the Kind CloudekaMachine")
 			err := k8sClient.Get(ctx, typeNamespacedName, cloudekamachine)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &cloudekaaiv1alpha1.CloudekaMachine{
+				resource := &virtv1alpha1.CloudekaMachine{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,7 +59,7 @@ var _ = Describe("CloudekaMachine Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &cloudekaaiv1alpha1.CloudekaMachine{}
+			resource := &virtv1alpha1.CloudekaMachine{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 

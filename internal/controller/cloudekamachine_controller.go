@@ -19,14 +19,12 @@ package controller
 import (
 	"context"
 
-	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	"github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
-	cloudekaaiv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
+	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 )
 
 // CloudekaMachineReconciler reconciles a CloudekaMachine object
@@ -35,9 +33,9 @@ type CloudekaMachineReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=cloudeka.ai.cloudeka.ai,resources=cloudekamachines,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=cloudeka.ai.cloudeka.ai,resources=cloudekamachines/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=cloudeka.ai.cloudeka.ai,resources=cloudekamachines/finalizers,verbs=update
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -51,24 +49,7 @@ type CloudekaMachineReconciler struct {
 func (r *CloudekaMachineReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	cm := &v1alpha1.CloudekaMachine{}
-	err := r.Get(ctx, req.NamespacedName, cm)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			// VirtualMachine resource not found. Ignoring since it must have been deleted.
-			return ctrl.Result{}, nil
-		}
-		// Error reading the object - requeue the request.
-		return ctrl.Result{}, err
-	}
-
-	// Update the VirtualMachine status
-	cm.Status.Valid = true
-	cm.Status.Running = true
-	err = r.Status().Update(ctx, cm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
+	// TODO(user): your logic here
 
 	return ctrl.Result{}, nil
 }
@@ -76,6 +57,6 @@ func (r *CloudekaMachineReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 // SetupWithManager sets up the controller with the Manager.
 func (r *CloudekaMachineReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&cloudekaaiv1alpha1.CloudekaMachine{}).
+		For(&virtv1alpha1.CloudekaMachine{}).
 		Complete(r)
 }

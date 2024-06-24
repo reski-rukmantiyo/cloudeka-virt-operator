@@ -1,4 +1,4 @@
 ## Append samples of your project ##
 resources:
-- cloudeka.ai_v1alpha1_cloudekamachine.yaml
+- virt_v1alpha1_cloudekamachine.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

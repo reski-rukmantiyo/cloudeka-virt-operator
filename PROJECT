@@ -16,7 +16,7 @@ resources:
     namespaced: true
   controller: true
   domain: cloudeka.ai
-  group: cloudeka.ai
+  group: virt
   kind: CloudekaMachine
   path: github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1
   version: v1alpha1

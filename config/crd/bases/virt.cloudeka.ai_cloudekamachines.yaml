@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: cloudekamachines.cloudeka.ai.cloudeka.ai
+  name: cloudekamachines.virt.cloudeka.ai
 spec:
-  group: cloudeka.ai.cloudeka.ai
+  group: virt.cloudeka.ai
   names:
     kind: CloudekaMachine
     listKind: CloudekaMachineList
@@ -17,6 +17,7 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: CloudekaMachine is the Schema for the cloudekamachines API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation

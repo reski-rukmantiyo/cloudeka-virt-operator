@@ -12,7 +12,7 @@ metadata:
   name: cloudekamachine-editor-role
 rules:
 - apiGroups:
-  - cloudeka.ai.cloudeka.ai
+  - virt.cloudeka.ai
   resources:
   - cloudekamachines
   verbs:
@@ -24,7 +24,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - cloudeka.ai.cloudeka.ai
+  - virt.cloudeka.ai
   resources:
   - cloudekamachines/status
   verbs:

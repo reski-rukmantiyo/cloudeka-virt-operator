@@ -1,4 +1,4 @@
-apiVersion: cloudeka.ai.cloudeka.ai/v1alpha1
+apiVersion: virt.cloudeka.ai/v1alpha1
 kind: CloudekaMachine
 metadata:
   labels:

@@ -35,12 +35,17 @@ type CloudekaMachineSpec struct {
 
 // CloudekaMachineStatus defines the observed state of CloudekaMachine
 type CloudekaMachineStatus struct {
+	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+	// Important: Run "make" to regenerate code after modifying this file
+
 	Running bool `json:"running"`
 	Valid   bool `json:"valid"`
 }
 
-// +kubebuilder:object:root=true
-// +kubebuilder:subresource:status
+//+kubebuilder:object:root=true
+//+kubebuilder:subresource:status
+
+// CloudekaMachine is the Schema for the cloudekamachines API
 type CloudekaMachine struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
