@@ -36,7 +36,7 @@ func (r *CloudekaMachine) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // TODO(user): EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-//+kubebuilder:webhook:path=/mutate-virt-cloudeka-ai-v1alpha1-cloudekamachine,mutating=true,failurePolicy=fail,sideEffects=None,groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=create;update,versions=v1alpha1,name=mcloudekamachine.kb.io,admissionReviewVersions=v1
+// +kubebuilder:webhook:path=/mutate-virt-cloudeka-ai-v1alpha1-cloudekamachine,mutating=true,failurePolicy=fail,sideEffects=None,groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=create;update,versions=v1alpha1,name=mcloudekamachine.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Defaulter = &CloudekaMachine{}
 
@@ -47,8 +47,7 @@ func (r *CloudekaMachine) Default() {
 	// TODO(user): fill in your defaulting logic.
 }
 
-// TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
-//+kubebuilder:webhook:path=/validate-virt-cloudeka-ai-v1alpha1-cloudekamachine,mutating=false,failurePolicy=fail,sideEffects=None,groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=create;update,versions=v1alpha1,name=vcloudekamachine.kb.io,admissionReviewVersions=v1
+// +kubebuilder:webhook:path=/validate-virt-cloudeka-ai-v1alpha1-cloudekamachine,mutating=false,failurePolicy=fail,sideEffects=None,groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=create;update;delete,versions=v1alpha1,name=vcloudekamachine.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Validator = &CloudekaMachine{}
 
