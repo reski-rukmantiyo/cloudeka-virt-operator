@@ -110,6 +110,7 @@ func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 	// DataVolume already exists - update status
 	cloudekaDataVolume.Status.Phase = string(found.Status.Phase)
+	cloudekaDataVolume.Status.Progress = string(found.Status.Progress)
 	err = r.Status().Update(ctx, cloudekaDataVolume)
 	if err != nil {
 		return ctrl.Result{}, err

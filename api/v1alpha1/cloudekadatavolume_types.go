@@ -35,6 +35,12 @@ type CloudekaDataVolumeStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
+//+kubebuilder:printcolumn:name="Size",type="string",JSONPath=".spec.size"
+//+kubebuilder:printcolumn:name="StorageClass",type="string",JSONPath=".spec.storageClass"
+//+kubebuilder:printcolumn:name="Phase",type="string",JSONPath=".status.phase"
+//+kubebuilder:printcolumn:name="Progress",type="string",JSONPath=".status.progress"
+//+kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 
 // CloudekaDataVolume is the Schema for the cloudekadatavolumes API
 type CloudekaDataVolume struct {
