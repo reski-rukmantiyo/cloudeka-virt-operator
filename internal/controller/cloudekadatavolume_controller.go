@@ -65,6 +65,9 @@ func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.R
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      cloudekaDataVolume.Name,
 			Namespace: cloudekaDataVolume.Namespace,
+			Annotations: map[string]string{
+				"cdi.kubevirt.io/storage.bind.immediate.requested": "True",
+			},
 		},
 		Spec: cdicontroller.DataVolumeSpec{
 			Source: &cdicontroller.DataVolumeSource{
@@ -119,5 +122,6 @@ func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.R
 func (r *CloudekaDataVolumeReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&virtv1alpha1.CloudekaDataVolume{}).
+		Owns(&cdicontroller.DataVolume{}).
 		Complete(r)
 }
