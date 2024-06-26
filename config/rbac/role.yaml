@@ -7,6 +7,32 @@ rules:
 - apiGroups:
   - virt.cloudeka.ai
   resources:
+  - cloudekadatavolumes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekadatavolumes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekadatavolumes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
   - cloudekamachines
   verbs:
   - create

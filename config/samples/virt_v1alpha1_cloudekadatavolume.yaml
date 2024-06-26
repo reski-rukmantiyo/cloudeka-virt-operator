@@ -1,0 +1,12 @@
+apiVersion: virt.cloudeka.ai/v1alpha1
+kind: CloudekaDataVolume
+metadata:
+  labels:
+    app.kubernetes.io/name: cloudekadatavolume
+    app.kubernetes.io/instance: cloudekadatavolume-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: cloudekadatavolume-sample
+spec:
+  # TODO(user): Add fields here

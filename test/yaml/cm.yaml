@@ -1,8 +1,9 @@
-apiVersion: cloudeka.ai.cloudeka.ai/v1alpha1
+apiVersion: virt.cloudeka.ai/v1alpha1
 kind: CloudekaMachine
 metadata:
   name: example-vm
 spec:
   processor: 2
   memory: 2Gi
-  disk: 10Gi
+  disk: 10Gi1
+  
