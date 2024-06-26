@@ -19,12 +19,17 @@ package controller
 import (
 	"context"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	cdicontroller "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 )
 
 // CloudekaDataVolumeReconciler reconciles a CloudekaDataVolume object
@@ -37,19 +42,75 @@ type CloudekaDataVolumeReconciler struct {
 //+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekadatavolumes/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekadatavolumes/finalizers,verbs=update
 
-// Reconcile is part of the main kubernetes reconciliation loop which aims to
-// move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the CloudekaDataVolume object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
 func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
+	log.Info("Reconciling CloudekaDataVolume")
+	url := "docker://docker.io/rrukmantiyo/kubevirt-images:ubuntu-22.04"
 
-	// TODO(user): your logic here
+	// Fetch the CloudekaDataVolume cloudekaDataVolume
+	cloudekaDataVolume := &virtv1alpha1.CloudekaDataVolume{}
+	err := r.Get(ctx, req.NamespacedName, cloudekaDataVolume)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			// Request object not found, could have been deleted after reconcile request.
+			// Return and don't requeue
+			return ctrl.Result{}, nil
+		}
+		// Error reading the object - requeue the request.
+		return ctrl.Result{}, err
+	}
+
+	// Define the desired DataVolume object
+	datavolume := &cdicontroller.DataVolume{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      cloudekaDataVolume.Name,
+			Namespace: cloudekaDataVolume.Namespace,
+		},
+		Spec: cdicontroller.DataVolumeSpec{
+			Source: &cdicontroller.DataVolumeSource{
+				Registry: &cdicontroller.DataVolumeSourceRegistry{
+					URL: &url,
+				},
+			},
+			PVC: &corev1.PersistentVolumeClaimSpec{
+				AccessModes: []corev1.PersistentVolumeAccessMode{
+					corev1.ReadWriteOnce,
+				},
+				Resources: corev1.VolumeResourceRequirements{
+					Requests: corev1.ResourceList{
+						corev1.ResourceStorage: resource.MustParse(cloudekaDataVolume.Spec.Size),
+					},
+				},
+			},
+		},
+	}
+
+	// Set CloudekaDataVolume instance as the owner and controller
+	if err := ctrl.SetControllerReference(cloudekaDataVolume, datavolume, r.Scheme); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Check if the DataVolume already exists
+	found := &cdicontroller.DataVolume{}
+	err = r.Get(ctx, client.ObjectKey{Name: datavolume.Name, Namespace: datavolume.Namespace}, found)
+	if err != nil && apierrors.IsNotFound(err) {
+		log.Info("Creating a new DataVolume", "DataVolume.Namespace", datavolume.Namespace, "DataVolume.Name", datavolume.Name)
+		err = r.Create(ctx, datavolume)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+		// DataVolume created successfully - return and requeue
+		return ctrl.Result{Requeue: true}, nil
+	} else if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// DataVolume already exists - update status
+	cloudekaDataVolume.Status.Phase = string(found.Status.Phase)
+	err = r.Status().Update(ctx, cloudekaDataVolume)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
