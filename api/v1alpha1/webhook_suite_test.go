@@ -116,6 +116,9 @@ var _ = BeforeSuite(func() {
 	err = (&CloudekaMachine{}).SetupWebhookWithManager(mgr)
 	Expect(err).NotTo(HaveOccurred())
 
+	err = (&CloudekaDataVolume{}).SetupWebhookWithManager(mgr)
+	Expect(err).NotTo(HaveOccurred())
+
 	//+kubebuilder:scaffold:webhook
 
 	go func() {
