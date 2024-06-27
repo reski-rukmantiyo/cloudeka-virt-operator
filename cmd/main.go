@@ -24,6 +24,7 @@ import (
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
+	cdicontroller "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -150,6 +151,11 @@ func main() {
 	}
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up ready check")
+		os.Exit(1)
+	}
+
+	if err := cdicontroller.AddToScheme(mgr.GetScheme()); err != nil {
+		setupLog.Error(err, "unable to add CDI APIs to scheme")
 		os.Exit(1)
 	}
 

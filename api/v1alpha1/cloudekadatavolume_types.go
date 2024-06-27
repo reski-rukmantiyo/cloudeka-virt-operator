@@ -35,6 +35,7 @@ type CloudekaDataVolumeStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:resource:shortName=cdv
 //+kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
 //+kubebuilder:printcolumn:name="Size",type="string",JSONPath=".spec.size"
 //+kubebuilder:printcolumn:name="StorageClass",type="string",JSONPath=".spec.storageClass"
