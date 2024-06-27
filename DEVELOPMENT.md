@@ -41,6 +41,6 @@ Visual Studio Code
 ## Generate CRD
 
 ```
-make manifests generate install
+make generate manifests install
 ```
 
