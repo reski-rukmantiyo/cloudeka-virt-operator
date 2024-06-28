@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"fmt"
+
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
@@ -63,9 +65,13 @@ func (r *CloudekaDataVolume) ValidateCreate() (admission.Warnings, error) {
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
 func (r *CloudekaDataVolume) ValidateUpdate(old runtime.Object) (admission.Warnings, error) {
-	cloudekadatavolumelog.Info("validate update", "name", r.Name)
+	// cloudekadatavolumelog.Info("cannot update for ", "name", r.Name, " values")
 
-	return nil, nil
+	warnings := admission.Warnings{
+		"cannot update immutability object - CloudekaDataVolume",
+	}
+
+	return warnings, fmt.Errorf("Cannot update")
 }
 
 // ValidateDelete implements webhook.Validator so a webhook will be registered for the type
