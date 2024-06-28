@@ -23,6 +23,7 @@ import (
 // CloudekaDataVolumeSpec defines the desired state of CloudekaDataVolume
 type CloudekaDataVolumeSpec struct {
 	Type         string `json:"type"`
+	Version      string `json:"version"`
 	Size         string `json:"size"`
 	StorageClass string `json:"storageClass"`
 }
@@ -37,6 +38,7 @@ type CloudekaDataVolumeStatus struct {
 //+kubebuilder:subresource:status
 //+kubebuilder:resource:shortName=cdv
 //+kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
+//+kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.version"
 //+kubebuilder:printcolumn:name="Size",type="string",JSONPath=".spec.size"
 //+kubebuilder:printcolumn:name="StorageClass",type="string",JSONPath=".spec.storageClass"
 //+kubebuilder:printcolumn:name="Phase",type="string",JSONPath=".status.phase"

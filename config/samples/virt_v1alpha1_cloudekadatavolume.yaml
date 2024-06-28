@@ -12,3 +12,4 @@ spec:
   size: 5Gi
   storageClass: standard
   type: Ubuntu
+  version: "22.04"

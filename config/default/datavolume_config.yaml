@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudekadatavolume-config
+  namespace: cloudeka-system
+data:
+  # Add default values for the CloudekaDataVolume Custom Resource
+  # This is a ConfigMap that will be used to set default values for the CloudekaDataVolume Custom Resource
+  repository: "docker://docker.io/rrukmantiyo/kubevirt-images"
+  types: |
+    ["ubuntu", "windows","rockylinux","almalinux","centos"]
+  versions: |
+    {
+      "ubuntu": ["20.04", "22.04","24.04"],
+      "windows": ["2022.01B", "11.01B","10.01B"],
+      "centos": ["7.9"],
+      "almalinux": ["8.9"],
+      "rockylinux": ["8.10","9.4"]
+    }

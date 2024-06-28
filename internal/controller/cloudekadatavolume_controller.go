@@ -18,6 +18,8 @@ package controller
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -26,6 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
+	"github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -45,7 +48,6 @@ type CloudekaDataVolumeReconciler struct {
 func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 	log.Info("Reconciling CloudekaDataVolume")
-	url := "docker://docker.io/rrukmantiyo/kubevirt-images:ubuntu-22.04"
 
 	// Fetch the CloudekaDataVolume cloudekaDataVolume
 	cloudekaDataVolume := &virtv1alpha1.CloudekaDataVolume{}
@@ -59,6 +61,12 @@ func (r *CloudekaDataVolumeReconciler) Reconcile(ctx context.Context, req ctrl.R
 		// Error reading the object - requeue the request.
 		return ctrl.Result{}, err
 	}
+
+	// url := "docker://docker.io/rrukmantiyo/kubevirt-images:ubuntu-22.04"
+
+	osType := strings.ToLower(cloudekaDataVolume.Spec.Type)
+	osVersion := strings.ToLower(cloudekaDataVolume.Spec.Version)
+	url := fmt.Sprintf("%s:%s-%s", v1alpha1.Repository, osType, osVersion)
 
 	// Define the desired DataVolume object
 	datavolume := &cdicontroller.DataVolume{
