@@ -1,0 +1,17 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: dv-ubuntu-22.04
+  annotations:
+    cdi.kubevirt.io/storage.bind.immediate.requested: "True"
+spec:
+  source:
+    registry:
+      url: docker://docker.io/rrukmantiyo/kubevirt-images:ubuntu-22.04
+  storage:
+    storageClassName: standard
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi

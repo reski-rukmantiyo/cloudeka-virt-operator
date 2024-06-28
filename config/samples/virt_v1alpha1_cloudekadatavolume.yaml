@@ -10,5 +10,5 @@ metadata:
   name: cloudekadatavolume-sample
 spec:
   size: 5Gi
-  storageClass: nfs-standard
+  storageClass: standard
   type: Ubuntu
