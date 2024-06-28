@@ -24,6 +24,7 @@ import (
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
+	cdicontroller "kubevirt.io/containerized-data-importer-api/pkg/apis/core/v1beta1"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -34,7 +35,7 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	apiv1beta1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1beta1"
+	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 	"github.com/reski-rukmantiyo/cloudeka-virt-operator/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
@@ -47,7 +48,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(apiv1beta1.AddToScheme(scheme))
+	utilruntime.Must(virtv1alpha1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -122,12 +123,31 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controller.VirtualMachineReconciler{
+	if err = (&controller.CloudekaMachineReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "VirtualMachine")
+		setupLog.Error(err, "unable to create controller", "controller", "CloudekaMachine")
 		os.Exit(1)
+	}
+	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
+		if err = (&virtv1alpha1.CloudekaMachine{}).SetupWebhookWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create webhook", "webhook", "CloudekaMachine")
+			os.Exit(1)
+		}
+	}
+	if err = (&controller.CloudekaDataVolumeReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "CloudekaDataVolume")
+		os.Exit(1)
+	}
+	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
+		if err = (&virtv1alpha1.CloudekaDataVolume{}).SetupWebhookWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create webhook", "webhook", "CloudekaDataVolume")
+			os.Exit(1)
+		}
 	}
 	//+kubebuilder:scaffold:builder
 
@@ -137,6 +157,11 @@ func main() {
 	}
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up ready check")
+		os.Exit(1)
+	}
+
+	if err := cdicontroller.AddToScheme(mgr.GetScheme()); err != nil {
+		setupLog.Error(err, "unable to add CDI APIs to scheme")
 		os.Exit(1)
 	}
 

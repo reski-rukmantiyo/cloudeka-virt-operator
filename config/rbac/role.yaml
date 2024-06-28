@@ -1,15 +1,58 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels:
-    app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: manager-role
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: operator
-    app.kubernetes.io/part-of: operator
-    app.kubernetes.io/managed-by: kustomize
   name: manager-role
 rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekadatavolumes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekadatavolumes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekadatavolumes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekamachines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekamachines/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - virt.cloudeka.ai
+  resources:
+  - cloudekamachines/status
+  verbs:
+  - get
+  - patch
+  - update

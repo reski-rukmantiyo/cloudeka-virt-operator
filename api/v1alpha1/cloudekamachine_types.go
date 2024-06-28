@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1beta1
+package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -23,42 +23,46 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// VirtualMachineSpec defines the desired state of VirtualMachine
-type VirtualMachineSpec struct {
+// CloudekaMachineSpec defines the desired state of CloudekaMachine
+type CloudekaMachineSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of VirtualMachine. Edit virtualmachine_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Processor int    `json:"processor"`
+	Memory    string `json:"memory"`
+	Disk      string `json:"disk"`
 }
 
-// VirtualMachineStatus defines the observed state of VirtualMachine
-type VirtualMachineStatus struct {
+// CloudekaMachineStatus defines the observed state of CloudekaMachine
+type CloudekaMachineStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	Running bool `json:"running"`
+	Valid   bool `json:"valid"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// VirtualMachine is the Schema for the virtualmachines API
-type VirtualMachine struct {
+// CloudekaMachine is the Schema for the cloudekamachines API
+type CloudekaMachine struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VirtualMachineSpec   `json:"spec,omitempty"`
-	Status VirtualMachineStatus `json:"status,omitempty"`
+	Spec   CloudekaMachineSpec   `json:"spec,omitempty"`
+	Status CloudekaMachineStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// VirtualMachineList contains a list of VirtualMachine
-type VirtualMachineList struct {
+// CloudekaMachineList contains a list of CloudekaMachine
+type CloudekaMachineList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VirtualMachine `json:"items"`
+	Items           []CloudekaMachine `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VirtualMachine{}, &VirtualMachineList{})
+	SchemeBuilder.Register(&CloudekaMachine{}, &CloudekaMachineList{})
 }

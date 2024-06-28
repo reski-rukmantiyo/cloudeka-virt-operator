@@ -24,29 +24,29 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	apiv1beta1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1beta1"
+	virtv1alpha1 "github.com/reski-rukmantiyo/cloudeka-virt-operator/api/v1alpha1"
 )
 
-// VirtualMachineReconciler reconciles a VirtualMachine object
-type VirtualMachineReconciler struct {
+// CloudekaMachineReconciler reconciles a CloudekaMachine object
+type CloudekaMachineReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=api.cloudeka.ai,resources=virtualmachines,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=api.cloudeka.ai,resources=virtualmachines/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=api.cloudeka.ai,resources=virtualmachines/finalizers,verbs=update
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=virt.cloudeka.ai,resources=cloudekamachines/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the VirtualMachine object against the actual cluster state, and then
+// the CloudekaMachine object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.3/pkg/reconcile
-func (r *VirtualMachineReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *CloudekaMachineReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
@@ -55,8 +55,8 @@ func (r *VirtualMachineReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *VirtualMachineReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *CloudekaMachineReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&apiv1beta1.VirtualMachine{}).
+		For(&virtv1alpha1.CloudekaMachine{}).
 		Complete(r)
 }

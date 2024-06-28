@@ -1,4 +1,5 @@
 ## Append samples of your project ##
 resources:
-- api_v1beta1_virtualmachine.yaml
+- virt_v1alpha1_cloudekamachine.yaml
+- virt_v1alpha1_cloudekadatavolume.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples
